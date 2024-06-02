@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>expenses</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div class="container">
+    <h1 class="mt-5">expenses</h1>
+    <div class="mb-3">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">HOME</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>INDEX:</th>
+                <th>DATE:</th>
+                <th>CATEGORY:</th>
+                <th>TITLE:</th>
+                <th>AMOUNT:</th>
+                <th>NOTES:</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ loop.index0 }}</td>
+                <td>{{ expense['date'] }}</td>
+                <td>{{ expense['category'] }}</td>
+                <td>{{ expense['title'] }}</td>
+                <td>{{ expense['amount'] }}</td>
+                <td>{{ expense['notes'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2 class="mt-5">delete index</h2>
+    <form method="POST" action="{{ url_for('expenses') }}">
+        {{ delete_form.hidden_tag() }}
+        <div class="form-group">
+            {{ delete_form.index.label(class="form-control-label") }}
+            {{ delete_form.index(class="form-control") }}
+        </div>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+            CONFIRM DELETE :(
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        you sure buddy?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        {{ delete_form.confirm(class="btn btn-danger") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% if daily_barchart %}
+        <div class="row mt-4">
+        <div class="col-12">
+        <div class="row">
+            <div class="col-12">
+                <img src="{{ daily_barchart }}" class="img-fluid" alt="Bar Chart">
+            </div>
+        </div>
+    {% endif %}
+    <hr></hr>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
